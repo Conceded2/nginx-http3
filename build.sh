@@ -20,8 +20,7 @@ echo Fetch quictls source code.
 cd nginx-*
 mkdir debian/modules
 cd debian/modules
-git clone --depth 1 --recursive https://github.com/quictls/quictls > /dev/null 2>&1
-mv quictls openssl
+git clone --depth 1 --recursive https://github.com/quictls/openssl > /dev/null 2>&1
 echo Fetch additional dependencies.
 git clone --depth 1 --recursive https://github.com/google/ngx_brotli > /dev/null 2>&1
 mkdir ngx_brotli/deps/brotli/out
