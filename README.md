@@ -2,9 +2,7 @@
 
 ## Distribution switch notice
 
-According to [Debian Wiki](https://wiki.debian.org/DebianReleases), Debian bullseye will reach its end-of-life date in July 2024. Therefore, the project will switch to Debian bookworm as the packaging environment in June 2024.
-
-**Update:** already switched on June 25th.
+According to [Debian Wiki](https://wiki.debian.org/DebianReleases), Debian bookworm has reach its end-of-life date in June 2026. Therefore, since version v9.0.0, the project will switch to Debian trixie as the packaging environment.
 
 ## Table of Contents
 
@@ -63,11 +61,11 @@ For example, if you want to add `http_scgi_module` back, you need to remove `--h
 
 ## Use in another distribution
 
-Fork this repo, enable GitHub Actions, edit `Dockerfile` and `build.sh`, and change `bookworm` to the one you like. Then wait for GitHub Actions to run. After it finishes, you can download from releases.
+Fork this repo, enable GitHub Actions, edit `Dockerfile` and `build.sh`, and change `trixie` to the one you like. Then wait for GitHub Actions to run. After it finishes, you can download from releases.
 
-For example, if you want to use in Debian bullseye, you need to change `bookworm` to `bullseye`.
+For example, if you want to use in Debian bookworm, you need to change `trixie` to `bookworm`.
 
-Note: if you are using newer version of Debian (e.g. Debian trixie or unstable), you can still use releases for Debian bookworm as Debian is backward compatible.
+Note: if you are using newer version of Debian (e.g. Debian testing or unstable), you can directly use this repo's pre-built releases because Debian is backward compatible.
 
 ## Recommended NGINX config
 
@@ -86,8 +84,6 @@ http {
   ssl_protocols TLSv1.2 TLSv1.3;
   ssl_session_cache shared:SSL:10m;
   ssl_session_timeout 1d;
-  ssl_stapling on;
-  ssl_stapling_verify on;
   server {
     listen 80 reuseport;
     listen [::]:80 reuseport; # delete if ipv6 is unavailable
@@ -136,9 +132,8 @@ http {
     index index.php;
     add_header Alt-Svc 'h3=":443"; ma=86400';
     location ~ ^.+\.php$ {
-      include fastcgi_params;
+      include fastcgi.conf;
       fastcgi_param HTTP_PROXY '';
-      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
       fastcgi_pass unix:/path/to/php/sock;
     }
   }
